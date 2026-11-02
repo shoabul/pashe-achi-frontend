@@ -1,12 +1,29 @@
 import Hero from '@/components/Hero';
-import React from 'react';
+import RecentUpcomingEvents from '@/components/RecentUpcomingEvents';
 
-const HomePage = () => {
+async function getEvents() {
+  try {
+    const res = await fetch('http://localhost:8000/api/events/', {
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      return [];
+    }
+
+    return await res.json();
+  } catch (error) {
+    return [];
+  }
+}
+
+export default async function HomePage() {
+  const events = await getEvents();
+
   return (
-    <div>
+    <main className="min-h-screen bg-gray-50">
       <Hero />
-    </div>
+      <RecentUpcomingEvents events={events} />
+    </main>
   );
-};
-
-export default HomePage;
+}
