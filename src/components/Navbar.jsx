@@ -27,8 +27,8 @@ export default function Navbar() {
                         href="/"
                         onClick={() => setActiveTab('Home')}
                         className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${activeTab === 'Home'
-                                ? 'bg-[#D3E1D9] text-gray-900'
-                                : 'text-gray-600 hover:text-gray-900'
+                            ? 'bg-[#D3E1D9] text-gray-900'
+                            : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
                         Home
@@ -37,8 +37,8 @@ export default function Navbar() {
                         href="/upcoming-events"
                         onClick={() => setActiveTab('Upcoming Events')}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'Upcoming Events'
-                                ? 'bg-[#D3E1D9] text-gray-900'
-                                : 'text-gray-600 hover:text-gray-900'
+                            ? 'bg-[#D3E1D9] text-gray-900'
+                            : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
                         Upcoming Events
@@ -56,10 +56,14 @@ export default function Navbar() {
                         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
 
-
-                    <button className="bg-[#046A4E] hover:bg-[#03543e] text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
-                        Login
-                    </button>
+                    <Link
+                        href="/sign-in"
+                        onClick={() => setActiveTab('Sign In')}
+                    >
+                        <button className="bg-[#046A4E] hover:bg-[#03543e] text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
+                            Login
+                        </button>
+                    </Link>
                 </div>
 
             </div>
