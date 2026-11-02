@@ -2,11 +2,21 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Moon, Sun, } from 'lucide-react';
+import Image from 'next/image';
+import { Moon, Sun, LogOut } from 'lucide-react';
+import { authClient } from '@/lib/auth-client'; 
 
 export default function Navbar() {
     const [darkMode, setDarkMode] = useState(false);
     const [activeTab, setActiveTab] = useState('Home');
+
+
+    const { data: session, isPending } = authClient.useSession();
+    const user = session?.user;
+
+    const handleSignOut = async () => {
+        await authClient.signOut();
+    };
 
     return (
         <nav className="w-full bg-[#E5EBE7] px-6 py-3 border-b border-gray-200/50">
@@ -20,7 +30,6 @@ export default function Navbar() {
                         </span>
                     </div>
                 </div>
-
 
                 <div className="flex items-center space-x-2">
                     <Link
@@ -45,7 +54,6 @@ export default function Navbar() {
                     </Link>
                 </div>
 
-
                 <div className="flex items-center space-x-3">
 
                     <button
@@ -56,14 +64,49 @@ export default function Navbar() {
                         {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                     </button>
 
-                    <Link
-                        href="/sign-in"
-                        onClick={() => setActiveTab('Sign In')}
-                    >
-                        <button className="bg-[#046A4E] hover:bg-[#03543e] text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
-                            Login
-                        </button>
-                    </Link>
+
+                    {isPending ? (
+
+                        <div className="w-9 h-9 rounded-full bg-gray-300 animate-pulse" />
+                    ) : user ? (
+
+                        <div className="flex items-center gap-3">
+                            <Link href="/profile" title={user.name || 'Profile'}>
+                                {user.image ? (
+                                    <Image
+                                        src={user.image}
+                                        alt={user.name || 'User'}
+                                        width={36}
+                                        height={36}
+                                        className="w-9 h-9 rounded-full object-cover border border-gray-300 shadow-sm"
+                                    />
+                                    
+                                ) : (
+                                    <div className="w-9 h-9 rounded-full bg-[#046A4E] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                                    </div>
+                                )}
+                            </Link>
+
+                            <button
+                                onClick={handleSignOut}
+                                className="p-2 text-gray-600 hover:text-red-600 hover:bg-white/60 rounded-lg transition-colors"
+                                title="Sign Out"
+                            >
+                                <LogOut size={18} />
+                            </button>
+                        </div>
+                    ) : (
+
+                        <Link
+                            href="/sign-in"
+                            onClick={() => setActiveTab('Sign In')}
+                        >
+                            <button className="bg-[#046A4E] hover:bg-[#03543e] text-white px-5 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm">
+                                Login
+                            </button>
+                        </Link>
+                    )}
                 </div>
 
             </div>
