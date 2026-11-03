@@ -1,4 +1,5 @@
-import EventCard from './EventCard';
+import EventCard from "./EventCard";
+import Link from "next/link";
 
 export default function RecentUpcomingEvents({ events = [] }) {
   return (
@@ -14,10 +15,20 @@ export default function RecentUpcomingEvents({ events = [] }) {
       </div>
 
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
         {events?.map((event) => (
           <EventCard key={event._id} event={event} />
         ))}
+      </div>
+
+
+      <div>
+        <Link
+          href="/events"
+          className="inline-block bg-white hover:bg-gray-50 text-gray-800 font-medium text-sm px-6 py-2.5 rounded-lg border border-gray-300 shadow-sm transition-colors"
+        >
+          See all events
+        </Link>
       </div>
     </section>
   );

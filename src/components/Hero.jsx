@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 export default function Hero() {
@@ -26,20 +27,23 @@ export default function Hero() {
                     Find a clothes drive, cleanup or reading class near you, sign up in one click, and turn up. Or start one yourself.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-center gap-4 mb-14">
-                    <a
-                        href="#events"
-                        className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#e29949] hover:bg-[#d68b3d] text-gray-900 font-semibold text-base transition-all duration-200 shadow-lg hover:shadow-yellow-500/10 text-center"
-                    >
-                        Browse upcoming events
-                    </a>
-                    <a
-                        href="#create"
-                        className="w-full sm:w-auto px-8 py-3.5 rounded-lg border border-white/40 hover:border-white text-white font-medium text-base bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 text-center"
-                    >
-                        Create an event
-                    </a>
-                </div>
+                <div className="flex flex-col sm:flex-row items-center gap-4 mb-14 w-full sm:w-auto">
+  {/* Primary Action Button */}
+  <Link
+    href="/events"
+    className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#e29949] hover:bg-[#d68b3d] text-gray-900 font-semibold text-base transition-all duration-200 shadow-lg hover:shadow-[#e29949]/20 active:scale-[0.98] text-center"
+  >
+    Browse upcoming events
+  </Link>
+
+  {/* Secondary Action Button */}
+  <Link
+    href="/create-event"
+    className="w-full sm:w-auto px-8 py-3.5 rounded-lg border border-white/20 hover:border-white/60 text-white font-medium text-base bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 active:scale-[0.98] text-center"
+  >
+    Create an event
+  </Link>
+</div>
 
                 <div className="flex items-center justify-center gap-12 text-left">
                     <div className="flex flex-col items-center sm:items-start">

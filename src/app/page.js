@@ -1,5 +1,10 @@
 import Hero from '@/components/Hero';
 import RecentUpcomingEvents from '@/components/RecentUpcomingEvents';
+import FeaturesSection from '@/components/FeaturesSection';
+import { Feather } from 'lucide-react';
+import PastEvents from '@/components/PastEvents';
+import Newsletter from '@/components/Newsletter';
+
 
 async function getEvents() {
   try {
@@ -24,6 +29,9 @@ export default async function HomePage() {
     <main className="min-h-screen bg-gray-50">
       <Hero />
       <RecentUpcomingEvents events={events} />
+      <FeaturesSection />
+      <PastEvents />
+      <Newsletter />
     </main>
   );
 }

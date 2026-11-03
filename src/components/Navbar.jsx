@@ -43,7 +43,7 @@ export default function Navbar() {
                         Home
                     </Link>
                     <Link
-                        href="/upcoming-events"
+                        href="/events"
                         onClick={() => setActiveTab('Upcoming Events')}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTab === 'Upcoming Events'
                             ? 'bg-[#D3E1D9] text-gray-900'
