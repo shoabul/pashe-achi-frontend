@@ -13,7 +13,7 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a231c]/60 to-[#0a231c]" />
             </div>
 
-            <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 flex flex-col items-center justify-center">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 flex flex-col items-center justify-center">
                 <span className="text-[#e29949] font-medium text-lg md:text-xl tracking-wide mb-4">
                     পাশে আছি
                 </span>
@@ -28,22 +28,22 @@ export default function Hero() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 mb-14 w-full sm:w-auto">
-  {/* Primary Action Button */}
-  <Link
-    href="/events"
-    className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#e29949] hover:bg-[#d68b3d] text-gray-900 font-semibold text-base transition-all duration-200 shadow-lg hover:shadow-[#e29949]/20 active:scale-[0.98] text-center"
-  >
-    Browse upcoming events
-  </Link>
+                    {/* Primary Action Button */}
+                    <Link
+                        href="/events"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#e29949] hover:bg-[#d68b3d] text-gray-900 font-semibold text-base transition-all duration-200 shadow-lg hover:shadow-[#e29949]/20 active:scale-[0.98] text-center"
+                    >
+                        Browse upcoming events
+                    </Link>
 
-  {/* Secondary Action Button */}
-  <Link
-    href="/create-event"
-    className="w-full sm:w-auto px-8 py-3.5 rounded-lg border border-white/20 hover:border-white/60 text-white font-medium text-base bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 active:scale-[0.98] text-center"
-  >
-    Create an event
-  </Link>
-</div>
+                    {/* Secondary Action Button */}
+                    <Link
+                        href="/create-event"
+                        className="w-full sm:w-auto px-8 py-3.5 rounded-lg border border-white/20 hover:border-white/60 text-white font-medium text-base bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-200 active:scale-[0.98] text-center"
+                    >
+                        Create an event
+                    </Link>
+                </div>
 
                 <div className="flex items-center justify-center gap-12 text-left">
                     <div className="flex flex-col items-center sm:items-start">

@@ -24,8 +24,8 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="w-full py-12 px-4 sm:px-6 flex justify-center items-center">
-      <div className="w-full max-w-7xl bg-[#006847] rounded-2xl p-8 md:p-10 text-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+    <section className="w-full py-10 px-4 sm:px-6 flex justify-center items-center">
+      <div className="w-full max-w-7xl mx-auto bg-[#006847] rounded-2xl p-8 md:p-10 text-white shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         
 
         <div className="space-y-2">

@@ -21,34 +21,30 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className=" px-6 py-16 md:px-12 lg:px-24">
-      <div className="mx-auto max-w-7xl">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mb-8">
+        <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+          Everything you need to organise a drive
+        </h2>
+        <p className="mt-2 text-base text-gray-600">
+          No spreadsheets, no group-chat chaos.
+        </p>
+      </div>
 
-        <div className="mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Everything you need to organise a drive
-          </h2>
-          <p className="mt-3 text-lg text-gray-600">
-            No spreadsheets, no group-chat chaos.
-          </p>
-        </div>
-
-
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="border-l-2 border-[#175239] pl-4 flex flex-col justify-start"
-            >
-              <h3 className="text-base font-bold text-gray-900">
-                {feature.title}
-              </h3>
-              <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="border-l-2 border-[#175239] pl-4 flex flex-col justify-start"
+          >
+            <h3 className="text-base font-bold text-gray-900">
+              {feature.title}
+            </h3>
+            <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+              {feature.description}
+            </p>
+          </div>
+        ))}
       </div>
     </section>
   );
