@@ -61,8 +61,8 @@ const handleJoinEvent = async () => {
 
     setLoading(true);
     try {
-      // Oboshshoi http://localhost:8000 use korben jate Next.js e hit na kore
-      const response = await fetch(`http://localhost:8000/api/events/${_id}/join`, {
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${_id}/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

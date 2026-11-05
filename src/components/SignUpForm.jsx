@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client'; // Adjust path based on your setup
+import { authClient } from '@/lib/auth-client';
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function SignUpForm() {
         },
         {
           onSuccess: () => {
-            router.push('/'); // Redirect after successful registration
+            router.push('/');
           },
           onError: (ctx) => {
             setError(ctx.error.message || 'Something went wrong during registration.');
@@ -44,7 +44,7 @@ export default function SignUpForm() {
     }
   };
 
-  // Google Sign-In Handler
+
   const handleGoogleSignIn = async () => {
     setError('');
     setGoogleLoading(true);
@@ -53,7 +53,7 @@ export default function SignUpForm() {
       await authClient.signIn.social(
         {
           provider: 'google',
-          callbackURL: '/', // Redirect after successful sign-in
+          callbackURL: '/',
         },
         {
           onError: (ctx) => {

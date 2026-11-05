@@ -1,10 +1,11 @@
 import EventDetails from '@/components/EventDetails';
-import { auth } from '@/lib/auth'; // Apnar BetterAuth server instance-er path
+import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import { Suspense } from 'react';
 
 async function getEventData(id) {
   try {
-    const res = await fetch(`http://localhost:8000/api/events/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${id}`, {
       cache: 'no-store',
     });
 
@@ -19,16 +20,16 @@ async function getEventData(id) {
   }
 }
 
-export default async function EventPage({ params }) {
+async function EventContent({ params }) {
   const { id } = await params;
 
-  // 1. BetterAuth session theke server-side a currentUser fetch kora
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   const currentUser = session?.user;
 
-  // 2. Event data fetch kora
+
   const event = await getEventData(id);
 
   if (!event) {
@@ -44,5 +45,13 @@ export default async function EventPage({ params }) {
       {/* currentUser prop ti ekhane pass korte hobe */}
       <EventDetails event={event} currentUser={currentUser} />
     </main>
+  );
+}
+
+export default function EventPage({ params }) {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>}>
+      <EventContent params={params} />
+    </Suspense>
   );
 }

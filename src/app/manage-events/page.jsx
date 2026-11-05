@@ -26,7 +26,7 @@ export default function ManageEventsPage() {
 
   const fetchUserEvents = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/events?createdBy=${currentUserId}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events?createdBy=${currentUserId}`);
       const data = await res.json();
       if (Array.isArray(data)) {
         setEvents(data);
@@ -42,7 +42,7 @@ export default function ManageEventsPage() {
     if (!confirm('Are you sure you want to delete this event?')) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/events/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${id}`, {
         method: 'DELETE',
         headers: {
           'x-user-id': currentUserId,

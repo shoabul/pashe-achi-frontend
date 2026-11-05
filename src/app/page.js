@@ -4,11 +4,12 @@ import FeaturesSection from '@/components/FeaturesSection';
 import { Feather } from 'lucide-react';
 import PastEvents from '@/components/PastEvents';
 import Newsletter from '@/components/Newsletter';
+import { Suspense } from 'react';
 
 
 async function getEvents() {
   try {
-    const res = await fetch('http://localhost:8000/api/events/', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/`, {
       cache: 'no-store',
     });
 
@@ -22,7 +23,7 @@ async function getEvents() {
   }
 }
 
-export default async function HomePage() {
+async function HomeContent() {
   const events = await getEvents();
 
   return (
@@ -33,5 +34,13 @@ export default async function HomePage() {
       <PastEvents />
       <Newsletter />
     </main>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
