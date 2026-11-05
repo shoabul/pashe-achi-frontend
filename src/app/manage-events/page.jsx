@@ -1,72 +1,60 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import ManageEventsCard from '@/components/ManageEventsCard';
-import { useSession } from '@/lib/auth-client';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { Suspense } from 'react';
 
-export default function ManageEventsPage() {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+async function getUserEvents(userId) {
+  try {
+    const cookieStore = await headers();
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events?createdBy=${userId}`, {
+      cache: 'no-store',
+      headers: {
+        Cookie: cookieStore.get('cookie') || '',
+      },
+    });
 
-  const { data: session, isPending } = useSession();
+    if (!res.ok) {
+      return [];
+    }
+
+    const data = await res.json();
+    return Array.isArray(data) ? data : data.events || [];
+  } catch (error) {
+    console.error('Error fetching user events:', error);
+    return [];
+  }
+}
+
+async function ManageEventsContent() {
+  await headers();
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const currentUserId = session?.user?.id;
 
-  useEffect(() => {
+  if (!currentUserId) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-500">
+        Please sign in to manage your events.
+      </div>
+    );
+  }
 
-    if (isPending) return;
-
-
-    if (!currentUserId) {
-      setLoading(false);
-      return;
-    }
-
-    fetchUserEvents();
-  }, [currentUserId, isPending]);
-
-  const fetchUserEvents = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events?createdBy=${currentUserId}`);
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        setEvents(data);
-      }
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!confirm('Are you sure you want to delete this event?')) return;
-
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'x-user-id': currentUserId,
-        },
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setEvents(events.filter((event) => event._id !== id));
-      } else {
-        alert(data.error || 'Failed to delete event');
-      }
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      alert('Failed to delete event');
-    }
-  };
+  const events = await getUserEvents(currentUserId);
 
   return (
     <ManageEventsCard
-      events={events}
-      loading={loading}
-      onDelete={handleDelete}
+      initialEvents={events}
+      currentUserId={currentUserId}
     />
+  );
+}
+
+export default function ManageEventsPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-500">Loading your events...</div>}>
+      <ManageEventsContent />
+    </Suspense>
   );
 }

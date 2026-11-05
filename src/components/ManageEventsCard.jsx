@@ -1,7 +1,38 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function ManageEvents({ events, loading, onDelete }) {
+export default function ManageEventsCard({ initialEvents = [], currentUserId }) {
+  const [events, setEvents] = useState(initialEvents);
+  const [loading, setLoading] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const handleDelete = async (id) => {
+    if (!confirm('Are you sure you want to delete this event?')) return;
+
+    try {
+      const res = await fetch(`${API_URL}/events/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'x-user-id': currentUserId,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setEvents((prev) => prev.filter((event) => event._id !== id));
+      } else {
+        alert(data.error || 'Failed to delete event');
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error);
+      alert('Failed to delete event');
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-20">
       <div className="flex justify-between items-center mb-6">
@@ -54,7 +85,7 @@ export default function ManageEvents({ events, loading, onDelete }) {
                       month: 'short',
                       year: 'numeric',
                     })}{' '}
-                    · {event.location || 'Location not specified'} · 0 joined
+                    · {event.location || 'Location not specified'} · {event.participants?.length || 0} joined
                   </p>
                 </div>
               </div>
@@ -67,7 +98,7 @@ export default function ManageEvents({ events, loading, onDelete }) {
                   Update
                 </Link>
                 <button
-                  onClick={() => onDelete(event._id)}
+                  onClick={() => handleDelete(event._id)}
                   className="px-4 py-1.5 bg-[#b91c1c] hover:bg-[#991b1b] text-white rounded text-sm font-medium transition-colors"
                 >
                   Delete
