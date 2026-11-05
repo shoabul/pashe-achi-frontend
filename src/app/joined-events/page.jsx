@@ -26,7 +26,7 @@ const JoinedEventsPage = () => {
     const fetchJoinedEvents = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${API_URL}/api/events?participant=${userId}`);
+        const res = await fetch(`${API_URL}/events?participant=${userId}`);
         if (!res.ok) throw new Error('Failed to fetch joined events');
         const data = await res.json();
         setJoinedEvents(data);
@@ -44,7 +44,7 @@ const JoinedEventsPage = () => {
     if (!userId) return;
     
     try {
-      const res = await fetch(`${API_URL}/api/events/${eventId}/join`, {
+      const res = await fetch(`${API_URL}/events/${eventId}/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
