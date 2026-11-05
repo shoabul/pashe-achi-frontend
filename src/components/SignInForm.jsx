@@ -1,17 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
+import { toast } from 'react-toastify';
 
 export default function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+
+  // ইউআরএল থেকে error কুয়েরি প্যারামিটার চেক করে টোস্ট শো করা
+  useEffect(() => {
+    const errorMessage = searchParams.get('error');
+    if (errorMessage) {
+      toast.error(errorMessage, {
+        position: 'top-right',
+        autoClose: 5000,
+      });
+    }
+  }, [searchParams]);
 
   // Email & Password Sign In Handler
   const handleSubmit = async (e) => {
@@ -27,15 +41,20 @@ export default function SignInForm() {
         },
         {
           onSuccess: () => {
+            toast.success('Successfully logged in!');
             router.push('/');
           },
           onError: (ctx) => {
-            setError(ctx.error.message || 'Invalid email or password.');
+            const errorMsg = ctx.error.message || 'Invalid email or password.';
+            setError(errorMsg);
+            toast.error(errorMsg);
           },
         }
       );
     } catch (err) {
-      setError('An unexpected error occurred during sign in.');
+      const errorMsg = 'An unexpected error occurred during sign in.';
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -54,13 +73,17 @@ export default function SignInForm() {
         },
         {
           onError: (ctx) => {
-            setError(ctx.error.message || 'Something went wrong with Google sign in.');
+            const errorMsg = ctx.error.message || 'Something went wrong with Google sign in.';
+            setError(errorMsg);
+            toast.error(errorMsg);
             setGoogleLoading(false);
           },
         }
       );
     } catch (err) {
-      setError('An unexpected error occurred with Google sign in.');
+      const errorMsg = 'An unexpected error occurred with Google sign in.';
+      setError(errorMsg);
+      toast.error(errorMsg);
       setGoogleLoading(false);
     }
   };

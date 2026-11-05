@@ -1,6 +1,7 @@
 import EventDetails from '@/components/EventDetails';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 async function getEventData(id) {
@@ -21,14 +22,18 @@ async function getEventData(id) {
 }
 
 async function EventContent({ params }) {
-  const { id } = await params;
-
+  const resolvedParams = await params;
+  const id = resolvedParams?.id;
 
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   const currentUser = session?.user;
 
+  // ইউজার লগইন না থাকলে /sign-in পেজে রিডাইরেক্ট হবে
+  if (!currentUser) {
+    redirect('/sign-in?error=Please%20sign%20in%20to%20view%20event%20details.');
+  }
 
   const event = await getEventData(id);
 
@@ -42,7 +47,6 @@ async function EventContent({ params }) {
 
   return (
     <main className="bg-[#f8faf9] py-10">
-      {/* currentUser prop ti ekhane pass korte hobe */}
       <EventDetails event={event} currentUser={currentUser} />
     </main>
   );
