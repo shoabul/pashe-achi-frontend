@@ -23,12 +23,12 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto flex items-center justify-between">
 
                 <div className="flex items-center space-x-3">
-                    <div className="flex items-baseline space-x-2">
-                        <span className="text-xl font-extrabold text-gray-900 tracking-tight">
-                            Pashe Achi
-                        </span>
-                    </div>
-                </div>
+      <Link href="/" className="flex items-baseline space-x-2 focus:outline-none">
+        <span className="text-xl font-extrabold text-gray-900 tracking-tight hover:opacity-90 transition-opacity">
+          Pashe Achi
+        </span>
+      </Link>
+    </div>
 
                 <div className="flex items-center space-x-2">
                     <Link

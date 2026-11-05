@@ -5,32 +5,32 @@ const eventsData = [
   {
     id: 1,
     title: 'Hatirjheel plantation',
-    imageUrl: 'https://via.placeholder.com/400x300/1e7e34/ffffff?text=Hatirjheel+plantation',
+    imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 2,
     title: 'Blanket drive, Mohammadpur',
-    imageUrl: 'https://via.placeholder.com/400x300/9b3939/ffffff?text=Blanket+drive',
+    imageUrl: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 3,
     title: 'Lakeside cleanup, Dhanmondi',
-    imageUrl: 'https://via.placeholder.com/400x300/0f766e/ffffff?text=Lakeside+cleanup',
+    imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 4,
     title: 'Footpath class, Shahbag',
-    imageUrl: 'https://via.placeholder.com/400x300/85581a/ffffff?text=Footpath+class',
+    imageUrl: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 5,
     title: 'Eye camp, Mymensingh',
-    imageUrl: 'https://via.placeholder.com/400x300/1d5298/ffffff?text=Eye+camp',
+    imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: 6,
     title: 'Winter clothes, Mirpur 10',
-    imageUrl: 'https://via.placeholder.com/400x300/9b3939/ffffff?text=Winter+clothes',
+    imageUrl: 'https://old.bidyanondo.org/uploads/projects/12/Winter-Clothes-Distribution-small-1704364188.jpg',
   },
 ];
 
@@ -45,13 +45,13 @@ const PastEvents = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {eventsData.map((event) => (
           <div key={event.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div className="h-56 w-full overflow-hidden">
+            <div className="relative h-56 w-full overflow-hidden">
               <Image
                 src={event.imageUrl}
                 alt={event.title}
-                width={400}
-                height={300}
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                className="object-cover"
               />
             </div>
             <div className="p-4">
