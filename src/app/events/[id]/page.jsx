@@ -1,5 +1,6 @@
 import EventDetails from '@/components/EventDetails';
-
+import { auth } from '@/lib/auth'; // Apnar BetterAuth server instance-er path
+import { headers } from 'next/headers';
 
 async function getEventData(id) {
   try {
@@ -20,6 +21,14 @@ async function getEventData(id) {
 
 export default async function EventPage({ params }) {
   const { id } = await params;
+
+  // 1. BetterAuth session theke server-side a currentUser fetch kora
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const currentUser = session?.user;
+
+  // 2. Event data fetch kora
   const event = await getEventData(id);
 
   if (!event) {
@@ -31,8 +40,9 @@ export default async function EventPage({ params }) {
   }
 
   return (
-    <main className=" bg-[#f8faf9] py-10">
-      <EventDetails event={event} />
+    <main className="bg-[#f8faf9] py-10">
+      {/* currentUser prop ti ekhane pass korte hobe */}
+      <EventDetails event={event} currentUser={currentUser} />
     </main>
   );
 }
