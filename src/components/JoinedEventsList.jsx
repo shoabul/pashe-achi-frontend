@@ -1,11 +1,49 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
-  return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-12 ">
+export default function JoinedEventsList({ initialEvents = [], userId }) {
+  const [joinedEvents, setJoinedEvents] = useState(initialEvents);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+  const handleLeaveEvent = async (eventId) => {
+    if (!userId) return;
+    
+    try {
+      const res = await fetch(`${API_URL}/events/${eventId}/join`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId,
+        },
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.joined === false) {
+        setJoinedEvents((prev) => prev.filter((event) => event._id !== eventId));
+      } else {
+        alert(data.error || 'Failed to leave event.');
+      }
+    } catch (err) {
+      console.error('Error leaving event:', err);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
+  };
+
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-12">
       <div className="mb-10">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
           Joined events
@@ -14,7 +52,6 @@ const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
           Events you signed up for, soonest first.
         </p>
       </div>
-
 
       {joinedEvents.length === 0 ? (
         <div className="w-full border border-dashed border-gray-300 rounded-2xl bg-[#f8faf9] py-16 px-4 text-center flex flex-col items-center justify-center">
@@ -29,14 +66,12 @@ const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
           </Link>
         </div>
       ) : (
-
         <div className="space-y-4">
           {joinedEvents.map((event) => (
             <div
               key={event._id}
               className="w-full bg-white border border-gray-200/80 rounded-xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow duration-200"
             >
-              {/* Event Image & Details */}
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 border border-gray-200">
                   <Image
@@ -58,7 +93,6 @@ const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-row items-center justify-end space-x-2.5 self-end sm:self-center flex-shrink-0">
                 <Link
                   href={`/events/${event._id}`}
@@ -68,7 +102,7 @@ const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
                 </Link>
 
                 <button
-                  onClick={() => onLeaveEvent(event._id)}
+                  onClick={() => handleLeaveEvent(event._id)}
                   className="inline-flex items-center justify-center px-3.5 py-2 bg-[#b91c1c] hover:bg-[#991b1b] text-white font-medium text-xs sm:text-sm rounded-lg transition-colors duration-150 shadow-sm whitespace-nowrap"
                 >
                   Leave
@@ -80,6 +114,4 @@ const JoinedEventsList = ({ joinedEvents = [], onLeaveEvent, formatDate }) => {
       )}
     </div>
   );
-};
-
-export default JoinedEventsList;
+}
