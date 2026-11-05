@@ -8,14 +8,21 @@ export default function ManageEventsPage() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { data: session } = useSession();
+  const { data: session, isPending } = useSession();
   const currentUserId = session?.user?.id;
 
   useEffect(() => {
-    if (currentUserId) {
-      fetchUserEvents();
+
+    if (isPending) return;
+
+
+    if (!currentUserId) {
+      setLoading(false);
+      return;
     }
-  }, [currentUserId]);
+
+    fetchUserEvents();
+  }, [currentUserId, isPending]);
 
   const fetchUserEvents = async () => {
     try {
@@ -42,13 +49,16 @@ export default function ManageEventsPage() {
         },
       });
 
+      const data = await res.json();
+
       if (res.ok) {
         setEvents(events.filter((event) => event._id !== id));
       } else {
-        alert('Failed to delete event');
+        alert(data.error || 'Failed to delete event');
       }
     } catch (error) {
       console.error('Error deleting event:', error);
+      alert('Failed to delete event');
     }
   };
 

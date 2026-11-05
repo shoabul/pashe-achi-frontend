@@ -61,7 +61,7 @@ export default function ManageEvents({ events, loading, onDelete }) {
 
               <div className="flex items-center gap-2 self-end sm:self-center">
                 <Link
-                  href={`/events/update/${event._id}`}
+                  href={`/manage-events/update/${event._id}`}
                   className="px-4 py-1.5 border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Update

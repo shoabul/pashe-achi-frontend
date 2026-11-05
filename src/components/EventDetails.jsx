@@ -7,7 +7,6 @@ const EventDetails = ({ event }) => {
     category = 'Education',
     title = 'Weekend Reading Class for Street Children',
     description = 'A two-hour Bangla and basic maths class on the Shahbag footpath. Bring story books or notebooks. Teaching experience is welcome but not required.',
-    image,
     date = '3 Nov 2026',
     location = 'Shahbag, Dhaka',
     organiser = 'demo',
@@ -15,11 +14,28 @@ const EventDetails = ({ event }) => {
     isCreatedByMe = true,
   } = event;
 
+  // API ba Database e jehetu 'thumbnailUrl' naam e ache, tai ekhane shob guli field check kora hocche
+  const image = event.thumbnailUrl || event.image || event.imageUrl || event.photo || event.banner;
+
+  const formattedDate = (() => {
+    try {
+      const parsedDate = new Date(date);
+      if (isNaN(parsedDate.getTime())) return date;
+      return parsedDate.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    } catch {
+      return date;
+    }
+  })();
+
   return (
     <div className="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        {/* Left Column: Image & Details */}
+        {/* Left Column: Image, Title & Description */}
         <div className="lg:col-span-2 space-y-6">
           {/* Main Banner / Image Container */}
           <div className="relative w-full h-[320px] md:h-[400px] rounded-2xl overflow-hidden bg-[#804f14] flex items-center justify-center">
@@ -28,7 +44,7 @@ const EventDetails = ({ event }) => {
               {category}
             </span>
 
-            {/* Custom Image / Fallback Mock Banner matching design */}
+            {/* Custom Image / Fallback Mock Banner */}
             {image ? (
               <img
                 src={image}
@@ -53,7 +69,7 @@ const EventDetails = ({ event }) => {
             <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight">
               {title}
             </h1>
-            <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed whitespace-pre-line">
               {description}
             </p>
           </div>
@@ -65,7 +81,7 @@ const EventDetails = ({ event }) => {
             {/* Date */}
             <div>
               <p className="text-xs text-gray-400 font-medium">Date</p>
-              <p className="text-sm font-bold text-gray-800 mt-0.5">{date}</p>
+              <p className="text-sm font-bold text-gray-800 mt-0.5">{formattedDate}</p>
             </div>
 
             {/* Location */}

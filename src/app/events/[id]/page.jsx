@@ -1,10 +1,10 @@
 import EventDetails from '@/components/EventDetails';
 
-// API Fetching Function
+
 async function getEventData(id) {
   try {
     const res = await fetch(`http://localhost:8000/api/events/${id}`, {
-      cache: 'no-store', // dynamic data fetch
+      cache: 'no-store',
     });
 
     if (!res.ok) {
@@ -19,7 +19,7 @@ async function getEventData(id) {
 }
 
 export default async function EventPage({ params }) {
-  const { id } = await params; // Next.js 15+ compatible
+  const { id } = await params;
   const event = await getEventData(id);
 
   if (!event) {
