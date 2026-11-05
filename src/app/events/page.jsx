@@ -1,8 +1,10 @@
 import EventCard from "@/components/EventCard";
+import { headers } from "next/headers";
+import { Suspense } from "react";
 
 async function getEvents() {
   try {
-    const res = await fetch(`https://pashe-achi-backend.vercel.app/api/events`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events`, {
       cache: 'no-store',
     });
 
@@ -17,12 +19,15 @@ async function getEvents() {
   }
 }
 
-export default async function EventsPage() {
+async function EventsContent() {
+  // Runtime dynamic check er jonno
+  await headers();
+
   const data = await getEvents();
   const events = Array.isArray(data) ? data : data.events || [];
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Upcoming events</h1>
         <p className="text-gray-500 text-sm mt-1">
@@ -41,6 +46,14 @@ export default async function EventsPage() {
           ))}
         </div>
       )}
-    </main>
+    </div>
+  );
+}
+
+export default function EventsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-gray-500">Loading events...</div>}>
+      <EventsContent />
+    </Suspense>
   );
 }
