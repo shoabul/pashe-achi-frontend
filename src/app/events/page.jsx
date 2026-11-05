@@ -10,10 +10,12 @@ export default function EventsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
 
 
-  useEffect(() => {
+ useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/`);
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://pashe-achi-backend.vercel.app/api";
+        // Sheser extra slash (/) ti remove kore dewa holo
+        const res = await fetch(`${baseUrl}/events`);
         const data = await res.json();
         
         setEvents(Array.isArray(data) ? data : data.events || []);
