@@ -26,7 +26,10 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        {/* flex-grow abar add kora holo jate footer niche thake */}
+        <main className="flex-grow">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
